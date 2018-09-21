@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @SpringBootApplication
@@ -27,5 +28,19 @@ public class DemoApplication {
         //读取config中自定义的文件 如果是打在jar内，用此方法读取会报找不到文件，只能使用流读取
         File file = ResourceUtils.getFile("classpath:config/test.txt");
         return IOUtils.toString(new FileInputStream(file));
+    }
+
+    @GetMapping("demo")
+    public String demo() throws IOException {
+        //读取jar内的文件，用此方法读取会报找不到文件，只能使用流读取
+        File file = ResourceUtils.getFile("classpath:templates/demo.html");
+        return IOUtils.toString(new FileInputStream(file));
+    }
+
+    @GetMapping("demo2")
+    public String demo2() throws IOException {
+        //读取jar内的文件，使用流读取正常
+        InputStream resourceAsStream = getClass().getResourceAsStream("/templates/demo.html");
+        return IOUtils.toString(resourceAsStream);
     }
 }
